@@ -106,4 +106,4 @@ A solução ideal mantém responsabilidades claras:
 - `Livro` controla sua disponibilidade
 - `Emprestimo` gerencia prazos e status
 
-> Em resumo, a POO oferece um método estruturado para decompor problemas complexos em partes menores e mais gerenciáveis (os objetos), tornando o processo de encontrar e implementar a melhor solução muito
+> Em resumo, a POO oferece um método estruturado para decompor problemas complexos em partes menores e mais gerenciáveis (os objetos), tornando o processo de encontrar e implementar a melhor solução muito mais interessante.
