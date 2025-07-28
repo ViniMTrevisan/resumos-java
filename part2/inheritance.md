@@ -161,4 +161,4 @@ public int hashCode() {
 
 ### Classes e Métodos Finais (final)
 - **Classe Final:** Declarada como `public final class ...`
-- **Método Final:** Declarado como
+- **Método Final:** Declarado como `public final void ...;`
