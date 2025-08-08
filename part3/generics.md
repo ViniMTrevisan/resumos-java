@@ -117,4 +117,71 @@ public static void printUsers(GenericList<?> users) {}
 
 ### Wildcard com Extends
 ```java
-public
+public static double sum(List<? extends Number> nums) {
+    return nums.stream().mapToDouble(Number::doubleValue).sum();
+}
+```
+
+### Wildcard com Super
+
+Permite adicionar itens (contravariância).
+
+```java
+public static void addUsers(List<? super User> list) {
+    list.add(new User(10));
+}
+```
+
+> Regra PECS: Producer Extends, Consumer Super.
+
+---
+
+## Invariância, covariância e contravariância
+
+- `List<Instructor>` NÃO é um `List<User>` (invariância)
+- Use `? extends User` para ler como `User`
+- Use `? super User` para escrever `User`
+
+---
+
+## Limites múltiplos
+
+```java
+public static <T extends Number & Comparable<T>> T max(T a, T b) {
+    return a.compareTo(b) >= 0 ? a : b;
+}
+```
+
+---
+
+## Erasure e implicações
+
+- Não há informação de tipo em runtime (type erasure)
+- Não é possível criar arrays de tipos genéricos: `new List<String>[10]` (proibido)
+- Não é possível usar genéricos com primitivos (use wrappers)
+
+Alternativa a arrays genéricos: use `List<T>` e fábricas.
+
+---
+
+## `@SafeVarargs` e varargs genéricos
+
+Use em métodos `final`, `static` ou `private` que não expõem arrays internamente.
+
+---
+
+## Captura de wildcard (helper methods)
+
+```java
+public static void copy(List<? extends User> src, List<? super User> dst) {
+    for (User u : src) dst.add(u);
+}
+```
+
+---
+
+## Inferência e operador diamante
+
+```java
+Map<String, List<Integer>> map = new HashMap<>(); // <> infere tipos
+```

@@ -162,3 +162,62 @@ public int hashCode() {
 ### Classes e Métodos Finais (final)
 - **Classe Final:** Declarada como `public final class ...`
 - **Método Final:** Declarado como `public final void ...;`
+
+---
+
+## Chamando membros da superclasse
+
+Use `super` para acessar implementação da classe pai.
+
+```java
+public class LoggerTextBox extends TextBox {
+    @Override
+    public String toString() {
+        String s = super.toString(); // mantém comportamento base
+        return "[LOG] " + s;
+    }
+}
+```
+
+---
+
+## Composição sobre Herança
+
+Prefira composição quando a herança não modela um verdadeiro "é um".
+
+```java
+// Em vez de extends
+public class CachedRepository {
+    private final Repository repo; // delega chamadas
+}
+```
+
+Benefícios: menor acoplamento, controle fino de exposição de API, evolução mais segura.
+
+---
+
+## Liskov Substitution Principle (LSP)
+
+Subtipos devem poder substituir seus supertypos sem quebrar expectativas.
+
+Contraexemplo clássico: `Square` estendendo `Rectangle` viola invariantes de largura/altura independentes.
+
+---
+
+## Classes Seladas (Java 17+)
+
+Controle da hierarquia de herança:
+
+```java
+public sealed abstract class Shape permits Circle, Rectangle {}
+public final class Circle extends Shape {}
+public non-sealed class Rectangle extends Shape {}
+```
+
+---
+
+## Quando usar `final`
+
+- Classes utilitárias imutáveis (ex: `String`)
+- Para impedir extensão acidental de tipos de domínio
+- Métodos críticos que não devem ser alterados

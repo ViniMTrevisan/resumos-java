@@ -432,3 +432,57 @@ Saída:
 - Esperar todos: `CompletableFuture.allOf(f1, f2, ...)`
 - Esperar qualquer: `CompletableFuture.anyOf(f1, f2, ...)`
 - Timeout: `orTimeout(prazo, unidade)` / Fallback: `completeOnTimeout(valor, prazo, unidade)`
+
+---
+
+## Agendamento com `ScheduledExecutorService`
+
+```java
+var scheduler = Executors.newScheduledThreadPool(1);
+var handle = scheduler.scheduleAtFixedRate(() -> doWork(), 0, 1, TimeUnit.MINUTES);
+```
+
+Use `scheduleWithFixedDelay` para intervalo entre término e próxima execução.
+
+---
+
+## Encerramento gracioso
+
+```java
+executor.shutdown();
+executor.awaitTermination(30, TimeUnit.SECONDS);
+```
+
+Sempre combine com `try/finally` e faça fallback para `shutdownNow()` se necessário.
+
+---
+
+## Tratamento de exceções
+
+- `submit` encapsula exceções no `Future` (verifique com `get()`)
+- `execute` propaga para `UncaughtExceptionHandler` da thread
+
+```java
+ThreadFactory factory = r -> {
+    Thread t = new Thread(r);
+    t.setName("app-worker-%d".formatted(t.getId()));
+    t.setUncaughtExceptionHandler((th, ex) -> log.error("uncaught", ex));
+    return t;
+};
+
+var executor = Executors.newFixedThreadPool(4, factory);
+```
+
+---
+
+## Estratégias de rejeição
+
+Em filas cheias, `ThreadPoolExecutor` usa um `RejectedExecutionHandler`.
+
+```java
+new ThreadPoolExecutor(
+    2, 4, 60, TimeUnit.SECONDS,
+    new ArrayBlockingQueue<>(100),
+    new ThreadPoolExecutor.CallerRunsPolicy() // backpressure
+);
+```

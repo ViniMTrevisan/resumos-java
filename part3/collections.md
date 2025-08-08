@@ -204,3 +204,64 @@ for (Map.Entry<String, Customer> entry : map.entrySet()) {
     System.out.println(entry.getKey() + " = " + entry.getValue());
 }
 ```
+
+---
+
+## Principais implementações e características
+
+- List
+  - `ArrayList`: acesso por índice O(1), inserções/remover no meio O(n)
+  - `LinkedList`: inserções/remoções O(1) nas extremidades, acesso por índice O(n)
+- Set
+  - `HashSet`: não ordenado, usa `hashCode`/`equals`
+  - `LinkedHashSet`: mantém ordem de inserção
+  - `TreeSet`: ordenado por `Comparable`/`Comparator` (O(log n))
+- Map
+  - `HashMap`: não ordenado; chaves precisam ter `hashCode`/`equals` consistentes
+  - `LinkedHashMap`: mantém ordem de inserção/uso (LRU com `accessOrder=true`)
+  - `TreeMap`: ordenado por chave; operações O(log n)
+  - `ConcurrentHashMap`: concorrente, particionado
+- Queue/Deque
+  - `ArrayDeque`: pilha/fila performática
+  - `PriorityQueue`: fila por prioridade (heap)
+
+---
+
+## Imutáveis e não modificáveis
+
+- Fábricas imutáveis: `List.of(...)`, `Set.of(...)`, `Map.of(...)`
+- Visualizações não modificáveis: `Collections.unmodifiableList(list)`
+
+---
+
+## Contrato `equals`/`hashCode`
+
+- Itens em `HashSet`/chaves de `HashMap` devem ter `equals` e `hashCode` compatíveis
+- Se o estado que compõe `hashCode` mudar após inserção, o item pode “sumir” da estrutura
+
+---
+
+## Ordenação
+
+```java
+list.sort(Comparator.comparing(Customer::getName)
+                    .thenComparing(Customer::getEmail));
+```
+
+---
+
+## Coleções Thread-safe
+
+- Wrappers sincronizados: `Collections.synchronizedList(...)`
+- Coleções concorrentes: `ConcurrentHashMap`, `CopyOnWriteArrayList`
+
+---
+
+## Interoperabilidade com Streams
+
+```java
+var emails = customers.stream()
+    .filter(c -> c.getPoints() > 100)
+    .map(Customer::getEmail)
+    .collect(Collectors.toList());
+```

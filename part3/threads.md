@@ -219,3 +219,64 @@ public class DownloadStatus {
     // Garante visibilidade entre threads, mas não atomicidade
 }
 ```
+
+---
+
+## Daemon threads e prioridade
+
+```java
+Thread t = new Thread(task);
+t.setDaemon(true);      // não impede JVM de encerrar
+t.setPriority(Thread.NORM_PRIORITY);
+```
+
+---
+
+## Espera e notificação (`wait`/`notify`)
+
+```java
+synchronized (lock) {
+    while (!condicao) lock.wait();
+    // ...
+}
+
+synchronized (lock) {
+    condicao = true;
+    lock.notifyAll();
+}
+```
+
+Use sempre dentro de blocos `synchronized` no mesmo `lock`.
+
+---
+
+## ThreadLocal
+
+```java
+private static final ThreadLocal<SimpleDateFormat> formatter =
+    ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd"));
+```
+
+---
+
+## Deadlocks: como evitar
+
+- Ordem consistente na aquisição de locks
+- Tente usar locks com timeout (`tryLock`)
+- Prefira estruturas de alto nível (`ExecutorService`, `Concurrent*`)
+
+---
+
+## Modelo de Memória Java (JMM) – visibilidade
+
+- `synchronized` e `Lock` estabelecem relação happens-before
+- `volatile` garante visibilidade, não atomicidade
+- Campos `final` têm visibilidade segura após o construtor terminar
+
+---
+
+## Boas práticas
+
+- Prefira pools de threads a threads manuais
+- Projete cancelamento cooperativo (`interrupt`, flags)
+- Evite compartilhar mutabilidade; use imutabilidade e coleções concorrentes

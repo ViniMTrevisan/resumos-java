@@ -149,3 +149,43 @@ var result = increment.andThen(square).apply(1); // 4
 ## Variable Capture
 
 > Lambdas podem acessar variáveis locais (efetivamente finais), campos estáticos e de instância da classe.
+
+---
+
+## java.util.function (guia rápido)
+
+- `Consumer<T>`: recebe T, retorna void (`accept`)
+- `Supplier<T>`: retorna T (`get`)
+- `Function<T,R>`: T → R (`apply`), compose/andThen
+- `Predicate<T>`: T → boolean (`test`), and/or/negate
+- `UnaryOperator<T>`: T → T
+- `BinaryOperator<T>`: (T,T) → T (com `minBy`/`maxBy`)
+
+---
+
+## Tratando exceções em lambdas
+
+```java
+Function<String, Integer> parse = s -> {
+    try { return Integer.parseInt(s); }
+    catch (NumberFormatException e) { return 0; }
+};
+```
+
+---
+
+## Comparators com lambdas
+
+```java
+Comparator<User> cmp = Comparator.comparing(User::getPoints)
+                                 .thenComparing(User::getName);
+```
+
+---
+
+## Optional (estilo funcional)
+
+```java
+Optional<User> maybe = repo.findById(id);
+int points = maybe.map(User::getPoints).orElse(0);
+```

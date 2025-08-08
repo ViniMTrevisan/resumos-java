@@ -32,9 +32,9 @@ Uma classe é um container para funções (métodos) relacionadas a ela.
 Para criar uma classe principal:
 
 ```java
-class Main {
-    void Main() {
-        // ...
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello, Java!");
     }
 }
 ```
@@ -83,12 +83,76 @@ Usamos **packages** para organizar bem as nossas classes.
 - A base do nome de um *package* costuma ser o **nome do domínio ao contrário**, por exemplo:
 
 ```
-rideday
+com.seudominio.seuprojeto
 ```
+
+Arquitetura de diretórios típica (Maven/Gradle):
+
+```
+src/
+  main/
+    java/
+      com/seudominio/seuprojeto/Main.java
+    resources/
+  test/
+    java/
+```
+
+Para que o `package` funcione, o caminho do arquivo deve corresponder ao nome do pacote.
 
 ## Strings
 
 Usar **aspas duplas (`"`)** para declarar strings.
+
+---
+
+## Compilar e Executar pelo terminal
+
+```bash
+javac Main.java
+java Main
+```
+
+Com `package`:
+
+```bash
+javac com/seudominio/seuprojeto/Main.java
+java com.seudominio.seuprojeto.Main
+```
+
+---
+
+## Imports
+
+```java
+import java.util.List;
+
+public class Demo {
+    public static void main(String[] args) {
+        List<String> items = List.of("a", "b");
+        System.out.println(items);
+    }
+}
+```
+
+Regra: importe classes necessárias; evite `*` em projetos grandes para manter clareza.
+
+---
+
+## Comentários e Javadoc
+
+- Comentários de linha: `// ...`
+- Comentários de bloco: `/* ... */`
+- Javadoc para APIs públicas:
+
+```java
+/**
+ * Calcula total com impostos.
+ * @param amount valor bruto
+ * @return total com impostos
+ */
+public BigDecimal total(BigDecimal amount) { /* ... */ }
+```
 
 ## Por Trás dos Panos
 

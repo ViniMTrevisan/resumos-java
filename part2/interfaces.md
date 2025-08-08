@@ -164,7 +164,61 @@ report.show(new TaxCalculator2019());
 
 Use interfaces quando quiser desacoplar uma classe de suas dependências diretas.
 
-## Benefícios:
-* Permite trocar implementações facilmente
-* Facilita a extensão da aplicação
-* Facilita testes unitários e
+## Benefícios (resumo):
+- Permite trocar implementações facilmente
+- Facilita a extensão da aplicação
+- Habilita testes unitários via mocks/stubs
+- Reduz acoplamento com detalhes concretos
+
+---
+
+## Métodos `default` e `static` em interfaces (Java 8+)
+
+```java
+public interface TaxCalculator {
+    double calculateTax();
+
+    default double effectiveRate() { // implementação opcional
+        return 0.30;
+    }
+
+    static boolean isValidIncome(double income) {
+        return income >= 0;
+    }
+}
+```
+
+Conflitos de múltiplos `default` exigem sobrescrita explícita na classe.
+
+---
+
+## Múltiplas interfaces e resolução de conflitos
+
+```java
+interface A { default String id() { return "A"; } }
+interface B { default String id() { return "B"; } }
+
+class C implements A, B {
+    @Override public String id() { return A.super.id(); }
+}
+```
+
+---
+
+## Interfaces Funcionais e `@FunctionalInterface`
+
+Use a anotação para garantir um único método abstrato.
+
+```java
+@FunctionalInterface
+interface Printer { void print(String msg); }
+```
+
+Permite uso com lambdas e method references.
+
+---
+
+## Interface vs. Classe Abstrata
+
+- Use interface para capacidades/contratos; permite herança múltipla de tipos
+- Use classe abstrata quando há estado/implementações parciais compartilhadas

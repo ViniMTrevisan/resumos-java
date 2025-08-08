@@ -186,4 +186,53 @@ var byPopularity = movies.stream()
 IntStream.range(1, 5);  // 1,2,3,4
 
 // RangeClosed (inclusive end)
-IntStream.rangeClosed(1, 5);  //
+IntStream.rangeClosed(1, 5);  // 1,2,3,4,5
+```
+
+Outros: `LongStream`, `DoubleStream` e conversões `mapToInt`, `mapToDouble`.
+
+---
+
+## Reduções (`reduce`) e `collect`
+
+```java
+int sum = IntStream.rangeClosed(1, 100).reduce(0, Integer::sum);
+
+var stats = movies.stream()
+    .collect(Collectors.summarizingInt(Movie::getLikes));
+
+var byGenre = movies.stream()
+    .collect(Collectors.groupingBy(Movie::getGenre,
+             Collectors.mapping(Movie::getTitle, Collectors.joining(", "))));
+```
+
+Use `collect` para acumulações mutáveis com `Collector`s prontos.
+
+---
+
+## Curto-circuito e operações stateful
+
+- `limit`, `skip`, `distinct`, `sorted` podem ser stateful
+- `anyMatch`, `findFirst`, `findAny` curto-circuitam
+
+---
+
+## Streams paralelos
+
+```java
+int sum = IntStream.range(0, 1_000_000).parallel().sum();
+```
+
+Cuidados: custo de dividir/combinar, acesso a recursos compartilhados, ordem (`forEachOrdered`).
+
+---
+
+## I/O com streams
+
+```java
+try (Stream<String> lines = Files.lines(Path.of("data.txt"))) {
+    long count = lines.filter(l -> !l.isBlank()).count();
+}
+```
+
+Streams são lazy; nada é executado até uma operação terminal ser chamada.

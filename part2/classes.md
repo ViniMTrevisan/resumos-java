@@ -210,3 +210,94 @@ public class Employee {
 Identifique os substantivos e responsabilidades do sistema. Exemplo: em um sistema de hipoteca, classes como `Hipoteca`, `CalculadoraDeJuros`, `Relatorio`.
 
 ---
+
+## Palavras-chave e recursos importantes
+
+### `this` e encadeamento de construtores
+
+```java
+public class Rectangle {
+    private final int width;
+    private final int height;
+
+    public Rectangle(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    public Rectangle() {
+        this(1, 1); // delega ao outro construtor
+    }
+}
+```
+
+### Métodos de fábrica estáticos
+
+Oferecem nomes melhores e possibilidade de cache/validação.
+
+```java
+public final class Money {
+    private final BigDecimal amount;
+    private final Currency currency;
+
+    private Money(BigDecimal amount, Currency currency) { /* validação */
+        this.amount = amount; this.currency = currency;
+    }
+
+    public static Money of(BigDecimal amount, Currency currency) {
+        return new Money(amount, currency);
+    }
+}
+```
+
+### Imutabilidade por padrão
+
+- Campos `private final`
+- Sem setters; exponha comportamento, não estado
+- Construa instância válida no construtor
+
+### Igualdade e representação textual
+
+```java
+@Override public String toString() { return "Point(" + x + "," + y + ")"; }
+
+@Override public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Point other)) return false;
+    return x == other.x && y == other.y;
+}
+
+@Override public int hashCode() { return Objects.hash(x, y); }
+```
+
+### Composição vs. Herança
+
+Prefira composição quando a relação não for estritamente "é um". Ela reduz acoplamento e torna a evolução mais segura.
+
+```java
+public class Car {
+    private final Engine engine; // composição
+}
+```
+
+### Builder para objetos complexos
+
+```java
+public class User {
+    private final String name;
+    private final String email;
+    private final int age;
+
+    private User(Builder b) { this.name = b.name; this.email = b.email; this.age = b.age; }
+
+    public static class Builder {
+        private String name; private String email; private int age;
+        public Builder name(String v) { this.name = v; return this; }
+        public Builder email(String v) { this.email = v; return this; }
+        public Builder age(int v) { this.age = v; return this; }
+        public User build() { return new User(this); }
+    }
+}
+
+var user = new User.Builder().name("Ana").email("ana@ex.com").age(30).build();
+```

@@ -247,3 +247,115 @@ System.out.print("Name: ");
 String name = scanner.nextLine().trim();
 System.out.println("You are " + name);
 ```
+
+---
+
+## Wrappers e Autoboxing
+
+Tipos primitivos possuem classes wrapper: `Integer`, `Long`, `Double`, `Boolean`, etc.
+
+```java
+int x = 10;              // primitivo
+Integer y = Integer.valueOf(10); // wrapper
+
+List<Integer> list = List.of(1, 2, 3); // coleções usam wrappers
+```
+
+Autoboxing/desboxing converte automaticamente entre primitivo e wrapper:
+
+```java
+Integer a = 1; // autoboxing
+int b = a;     // unboxing
+```
+
+---
+
+## Precisão monetária: BigDecimal
+
+Evite `float`/`double` para dinheiro. Use `BigDecimal` com `MathContext`/`RoundingMode`.
+
+```java
+BigDecimal price = new BigDecimal("10.90");
+BigDecimal tax = price.multiply(new BigDecimal("0.18"));
+BigDecimal total = price.add(tax).setScale(2, RoundingMode.HALF_UP);
+```
+
+---
+
+## Inferência de tipo com `var` (Java 10+)
+
+```java
+var name = "Vini";          // String
+var numbers = List.of(1, 2); // List<Integer>
+```
+
+Use quando o tipo for óbvio pelo lado direito. Não use em APIs públicas.
+
+---
+
+## Enums
+
+```java
+public enum Status { OPEN, CLOSED }
+
+Status s = Status.OPEN;
+```
+
+Enums podem ter campos e métodos.
+
+---
+
+## Records (Java 16+)
+
+Classes imutáveis concisas para transportar dados.
+
+```java
+public record Point(int x, int y) {}
+
+var p = new Point(1, 2);
+```
+
+---
+
+## Datas e Tempo (java.time)
+
+```java
+LocalDate today = LocalDate.now();
+LocalDateTime now = LocalDateTime.now();
+Period age = Period.between(LocalDate.of(2000, 1, 1), today);
+```
+
+Evite `java.util.Date`/`Calendar` em código novo.
+
+---
+
+## Valores padrão de campos
+
+- `int`, `long`, `short`, `byte` → 0
+- `float`, `double` → 0.0
+- `boolean` → `false`
+- Referências → `null`
+
+Em variáveis locais, inicialize explicitamente.
+
+---
+
+## Overflow/Underflow
+
+```java
+int max = Integer.MAX_VALUE;
+int overflow = max + 1; // valor negativo
+```
+
+Use `Math.addExact`, `multiplyExact` para detectar overflow.
+
+---
+
+## Comparações de ponto flutuante
+
+Evite `==` com `double`/`float`. Compare com tolerância (epsilon).
+
+```java
+double a = 0.1 + 0.2; // 0.30000000000000004
+boolean equals = Math.abs(a - 0.3) < 1e-9;
+```

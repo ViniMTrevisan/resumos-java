@@ -166,3 +166,77 @@ for (String fruit : fruits) {
 - Exemplo: se a array for `String[] oi`, o loop seria `for (String i : oi)`  
 - Não permite acessar o índice.  
 - Só itera no sentido crescente.
+
+---
+
+## `switch` Expressions (Java 14+)
+
+Permitem atribuir o resultado do `switch` a uma variável, com sintaxe mais concisa.
+
+```java
+String role = "Admin";
+String label = switch (role) {
+    case "Admin" -> "Admin";
+    case "User" -> "User";
+    default -> {
+        // Bloco com lógica extra
+        yield "Unknown";
+    }
+};
+```
+
+Vantagens:
+- Não precisa de `break`
+- Seguro contra fall-through acidental
+
+---
+
+## Pattern Matching para `instanceof` (Java 16+)
+
+Reduz boilerplate ao fazer cast após checagem de tipo.
+
+```java
+Object value = getValue();
+if (value instanceof String s && s.length() > 5) {
+    System.out.println(s.toUpperCase());
+}
+```
+
+---
+
+## `break` e `continue` rotulados
+
+Útil para sair de loops aninhados:
+
+```java
+outer:
+for (int i = 0; i < 10; i++) {
+    for (int j = 0; j < 10; j++) {
+        if (i * j > 30) break outer; // sai do laço "outer"
+    }
+}
+```
+
+---
+
+## Guard Clauses (clareza em condicionais)
+
+Prefira retornos antecipados para reduzir aninhamento.
+
+```java
+public String classify(int score) {
+    if (score < 0 || score > 100) return "invalid";
+    if (score >= 90) return "A";
+    if (score >= 80) return "B";
+    if (score >= 70) return "C";
+    return "D";
+}
+```
+
+---
+
+## Dicas finais
+
+- Prefira `switch` expressions para mapeamentos simples de valor → rótulo
+- Use `for-each` para iteração simples; use `for` com índice quando precisar do índice
+- Mantenha condicionais curtas; extraia lógica complexa para métodos nomeados

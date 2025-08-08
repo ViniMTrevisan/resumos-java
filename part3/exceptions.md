@@ -145,5 +145,41 @@ public void withdraw(float value) throws AccountException {
 
 ### Boas Práticas
 
-1. Use checked exceptions para condições recuperáveis
-2. Use unchecked exceptions para
+1. Use checked exceptions para condições recuperáveis (ex: I/O, rede)
+2. Use unchecked para erros de programação (argumentos inválidos, estados ilegais)
+3. Não sufoque exceções; preserve a causa (`new MyEx("msg", ex)`)
+4. Mensagens devem conter contexto (identificadores, parâmetros relevantes)
+5. Prefira `try-with-resources` para liberar recursos
+6. Faça validações cedo e falhe rápido (fail-fast)
+7. Evite usar exceções para fluxo de controle normal
+
+---
+
+## Múltiplos recursos e exceções suprimidas
+
+```java
+try (var in = Files.newBufferedReader(path);
+     var out = Files.newBufferedWriter(dest)) {
+    // ...
+} catch (IOException e) {
+    for (Throwable sup : e.getSuppressed()) {
+        System.err.println("Suppressed: " + sup);
+    }
+}
+```
+
+---
+
+## Ordenação de `catch`
+
+Capture exceções específicas antes das gerais; do contrário, as específicas ficam inacessíveis.
+
+---
+
+## Tradução e encapsulamento de exceções
+
+Converta exceções técnicas em exceções de domínio quando atravessarem camadas.
+
+```java
+catch (SQLException ex) { throw new RepositoryException("Falha ao salvar pedido", ex); }
+```

@@ -107,3 +107,35 @@ A solução ideal mantém responsabilidades claras:
 - `Emprestimo` gerencia prazos e status
 
 > Em resumo, a POO oferece um método estruturado para decompor problemas complexos em partes menores e mais gerenciáveis (os objetos), tornando o processo de encontrar e implementar a melhor solução muito mais interessante.
+
+---
+
+## Os 4 Pilares da POO
+
+- Encapsulamento: esconda detalhes, exponha uma API clara
+- Abstração: modele apenas o necessário para o contexto
+- Herança: reaproveite comportamentos (com parcimônia)
+- Polimorfismo: varie o comportamento mantendo a interface
+
+---
+
+## Coesão e Acoplamento
+
+- Alta coesão: classe focada em uma responsabilidade
+- Baixo acoplamento: poucas dependências diretas; use interfaces/DI
+
+---
+
+## SOLID (resumo prático)
+
+- S: uma classe deve ter um motivo único para mudar
+- O: feche para modificação, abra para extensão (interfaces, herança controlada)
+- L: subtipos substituem supertypos sem surpresas
+- I: segregue interfaces grandes em menores
+- D: dependa de abstrações, não de concreções (DI)
+
+---
+
+## Composição sobre Herança
+
+Prefira objetos colaborando por composição quando possível. Herança pode vazar detalhes e criar acoplamento rígido.
